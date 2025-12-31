@@ -13,7 +13,7 @@ public class AuthorDTO {
     private Integer deathYear;
     
     // Constructor para convertir desde Entity
-    public AuthorDTO(com.gutendex.model.entity.Author author) {
+    public AuthorDTO(com.gutendex.literaturas.model.entity.Author author) {
         this.id = author.getId();
         this.name = author.getName();
         this.birthYear = author.getBirthYear();
