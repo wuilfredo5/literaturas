@@ -1,6 +1,7 @@
 // src/main/java/com/gutendex/model/dto/BookDTO.java
 package com.gutendex.literaturas.model.dto;
 
+import com.gutendex.literaturas.model.entity.Book;
 import lombok.Data;
 
 import java.util.List;
@@ -38,4 +39,6 @@ public class BookDTO {
         this.mediaType = book.getMediaType();
         this.downloadCount = book.getDownloadCount();
     }
+
+
 }

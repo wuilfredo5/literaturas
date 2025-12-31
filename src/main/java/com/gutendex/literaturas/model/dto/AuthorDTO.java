@@ -1,6 +1,7 @@
 // src/main/java/com/gutendex/model/dto/AuthorDTO.java
 package com.gutendex.literaturas.model.dto;
 
+import com.gutendex.literaturas.model.entity.Author;
 import lombok.Data;
 
 @Data
@@ -18,4 +19,6 @@ public class AuthorDTO {
         this.birthYear = author.getBirthYear();
         this.deathYear = author.getDeathYear();
     }
+
+
 }

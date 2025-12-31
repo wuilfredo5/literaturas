@@ -1,11 +1,10 @@
 // src/main/java/com/gutendex/model/dto/BookMapper.java
 package com.gutendex.literaturas.model.dto;
 
-import com.gutendex.model.entity.Author;
-import com.gutendex.model.entity.Book;
-import com.gutendex.model.entity.BookFormats;
+import com.gutendex.literaturas.model.entity.Author;
+import com.gutendex.literaturas.model.entity.Book;
+import com.gutendex.literaturas.model.entity.BookFormats;
 import org.springframework.stereotype.Component;
-
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
