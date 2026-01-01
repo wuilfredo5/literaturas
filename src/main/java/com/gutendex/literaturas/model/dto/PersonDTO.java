@@ -2,14 +2,26 @@
 package com.gutendex.literaturas.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 
-@Data
+
+
 public class PersonDTO {
     
     @JsonProperty("birth_year")
     private Integer birthYear;
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public Integer getDeathYear() {
+        return deathYear;
+    }
+
     @JsonProperty("death_year")
     private Integer deathYear;
     

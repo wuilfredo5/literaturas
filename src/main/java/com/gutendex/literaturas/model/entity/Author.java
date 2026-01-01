@@ -1,17 +1,9 @@
-// src/main/java/com/gutendex/model/entity/Author.java
 package com.gutendex.literaturas.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "authors")
 public class Author {
@@ -32,20 +24,40 @@ public class Author {
     @Column(name = "death_year")
     private Integer deathYear;
 
-    @ToString.Exclude
-    @JsonIgnore
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
 
-    @ToString.Exclude
-    @JsonIgnore
     @ManyToMany(mappedBy = "translators")
     private Set<Book> translatedBooks = new HashSet<>();
 
-    // Constructor para crear desde DTO
+    // Constructores
+    public Author() {}
+
     public Author(String name, Integer birthYear, Integer deathYear) {
         this.name = name;
         this.birthYear = birthYear;
         this.deathYear = deathYear;
     }
+
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Long getGutenbergId() { return gutenbergId; }
+    public void setGutenbergId(Long gutenbergId) { this.gutenbergId = gutenbergId; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public Integer getBirthYear() { return birthYear; }
+    public void setBirthYear(Integer birthYear) { this.birthYear = birthYear; }
+
+    public Integer getDeathYear() { return deathYear; }
+    public void setDeathYear(Integer deathYear) { this.deathYear = deathYear; }
+
+    public Set<Book> getBooks() { return books; }
+    public void setBooks(Set<Book> books) { this.books = books; }
+
+    public Set<Book> getTranslatedBooks() { return translatedBooks; }
+    public void setTranslatedBooks(Set<Book> translatedBooks) { this.translatedBooks = translatedBooks; }
 }

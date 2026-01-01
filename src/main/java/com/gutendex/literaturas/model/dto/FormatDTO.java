@@ -2,11 +2,11 @@
 package com.gutendex.literaturas.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+
 
 import java.util.Map;
 
-@Data
+
 public class FormatDTO {
     
     @JsonProperty("text/plain")
@@ -52,4 +52,40 @@ public class FormatDTO {
     }
     
     public FormatDTO() {}
+
+    public String getTextPlainUs() {
+        return textPlainUs;
+    }
+
+    public String getImageJpeg() {
+        return imageJpeg;
+    }
+
+    public String getApplicationZip() {
+        return applicationZip;
+    }
+
+    public String getApplicationRdf() {
+        return applicationRdf;
+    }
+
+    public String getApplicationMobi() {
+        return applicationMobi;
+    }
+
+    public String getApplicationEpub() {
+        return applicationEpub;
+    }
+
+    public String getTextPlainUtf8() {
+        return textPlainUtf8;
+    }
+
+    public String getTextHtml() {
+        return textHtml;
+    }
+
+    public String getTextPlain() {
+        return textPlain;
+    }
 }

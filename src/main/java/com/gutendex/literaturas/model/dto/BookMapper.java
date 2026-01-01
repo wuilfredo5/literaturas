@@ -62,7 +62,8 @@ public class BookMapper {
     }
     
     public BookDTO toDTO(Book book) {
-        return new BookDTO(book);
+        BookDTO bookDTO = new BookDTO(book);
+        return bookDTO;
     }
     
     public AuthorDTO toDTO(Author author) {
