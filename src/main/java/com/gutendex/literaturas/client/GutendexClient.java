@@ -30,7 +30,7 @@ public class GutendexClient {
                     .build()
                     .toUri();
 
-            System.out.println("🔍 Buscando en URL: " + uri.toString());
+           // System.out.println("🔍 Buscando en URL: " + uri.toString());
             return restTemplate.getForObject(uri, GutendexResponseDTO.class);
 
         } catch (Exception e) {

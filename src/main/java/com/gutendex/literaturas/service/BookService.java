@@ -102,6 +102,7 @@ public class BookService {
     /**
      * Obtiene todos los libros de la base de datos
      */
+    @Transactional(readOnly = true)
     public List<BookDTO> getAllBooks() {
         return bookRepository.findAll().stream()
                 .map(bookMapper::toDTO)

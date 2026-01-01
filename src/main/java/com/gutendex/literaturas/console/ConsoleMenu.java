@@ -129,19 +129,25 @@ public class ConsoleMenu {
     /**
      * Opción 2: Listar libros registrados
      */
+    // En ConsoleMenu.java, método listRegisteredBooks():
     private void listRegisteredBooks() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("📖 LIBROS REGISTRADOS EN LA BASE DE DATOS");
         System.out.println("=".repeat(60));
-        
-        List<BookDTO> books = bookService.getAllBooks();
-        
-        if (books.isEmpty()) {
-            System.out.println("\n📭 No hay libros registrados en la base de datos.");
-            System.out.println("   Use la opción 1 para buscar y guardar libros.");
-        } else {
-            System.out.println("\n📊 Total de libros: " + books.size());
-            displayBooks(books);
+
+        try {
+            List<BookDTO> books = bookService.getAllBooks();
+
+            if (books.isEmpty()) {
+                System.out.println("\n📭 No hay libros registrados en la base de datos.");
+                System.out.println("   Use la opción 1 para buscar y guardar libros.");
+            } else {
+                System.out.println("\n📊 Total de libros: " + books.size());
+                displayBooks(books);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error al listar libros: " + e.getMessage());
+            System.out.println("\n⚠️  Intente buscar libros primero con la opción 1.");
         }
     }
     

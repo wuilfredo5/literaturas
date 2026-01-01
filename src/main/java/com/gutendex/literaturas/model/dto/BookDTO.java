@@ -18,7 +18,8 @@ public class BookDTO {
     private Long downloadCount;
 
     // Constructores
-    public BookDTO() {}
+    public BookDTO() {
+    }
 
     public BookDTO(com.gutendex.literaturas.model.entity.Book book) {
         this.id = book.getId();
@@ -39,36 +40,91 @@ public class BookDTO {
     }
 
     // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getGutenbergId() { return gutenbergId; }
-    public void setGutenbergId(Long gutenbergId) { this.gutenbergId = gutenbergId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public Long getGutenbergId() {
+        return gutenbergId;
+    }
 
-    public List<String> getSubjects() { return subjects; }
-    public void setSubjects(List<String> subjects) { this.subjects = subjects; }
+    public void setGutenbergId(Long gutenbergId) {
+        this.gutenbergId = gutenbergId;
+    }
 
-    public List<String> getAuthors() { return authors; }
-    public void setAuthors(List<String> authors) { this.authors = authors; }
+    public String getTitle() {
+        return title;
+    }
 
-    public List<String> getSummaries() { return summaries; }
-    public void setSummaries(List<String> summaries) { this.summaries = summaries; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public List<String> getTranslators() { return translators; }
-    public void setTranslators(List<String> translators) { this.translators = translators; }
+    public List<String> getSubjects() {
+        return subjects;
+    }
 
-    public List<String> getBookshelves() { return bookshelves; }
-    public void setBookshelves(List<String> bookshelves) { this.bookshelves = bookshelves; }
+    public void setSubjects(List<String> subjects) {
+        this.subjects = subjects;
+    }
 
-    public List<String> getLanguages() { return languages; }
-    public void setLanguages(List<String> languages) { this.languages = languages; }
+    public List<String> getAuthors() {
+        return authors;
+    }
 
-    public String getMediaType() { return mediaType; }
-    public void setMediaType(String mediaType) { this.mediaType = mediaType; }
+    public void setAuthors(List<String> authors) {
+        this.authors = authors;
+    }
 
-    public Long getDownloadCount() { return downloadCount; }
-    public void setDownloadCount(Long downloadCount) { this.downloadCount = downloadCount; }
+    public List<String> getSummaries() {
+        return summaries;
+    }
+
+    public void setSummaries(List<String> summaries) {
+        this.summaries = summaries;
+    }
+
+    public List<String> getTranslators() {
+        return translators;
+    }
+
+    public void setTranslators(List<String> translators) {
+        this.translators = translators;
+    }
+
+    public List<String> getBookshelves() {
+        return bookshelves;
+    }
+
+    public void setBookshelves(List<String> bookshelves) {
+        this.bookshelves = bookshelves;
+    }
+
+    public List<String> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<String> languages) {
+        this.languages = languages;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public Long getDownloadCount() {
+        return downloadCount;
+    }
+
+    public void setDownloadCount(Long downloadCount) {
+        this.downloadCount = downloadCount;
+    }
 }
