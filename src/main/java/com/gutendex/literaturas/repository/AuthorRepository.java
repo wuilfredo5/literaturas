@@ -1,4 +1,3 @@
-// src/main/java/com/gutendex/repository/AuthorRepository.java
 package com.gutendex.literaturas.repository;
 
 import com.gutendex.literaturas.model.entity.Author;
@@ -11,11 +10,11 @@ import java.util.List;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
-    
+
     List<Author> findByNameContainingIgnoreCase(String name);
-    
+
     @Query("SELECT a FROM Author a WHERE a.birthYear <= :year AND (a.deathYear IS NULL OR a.deathYear >= :year)")
     List<Author> findAliveInYear(@Param("year") Integer year);
-    
+
     boolean existsByNameAndBirthYearAndDeathYear(String name, Integer birthYear, Integer deathYear);
 }

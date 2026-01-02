@@ -1,4 +1,3 @@
-// src/main/java/com/gutendex/console/ConsoleMenu.java
 package com.gutendex.literaturas.console;
 
 import com.gutendex.literaturas.model.dto.AuthorDTO;
@@ -8,31 +7,30 @@ import com.gutendex.literaturas.service.BookService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Component
 public class ConsoleMenu {
-    
+
     private final BookService bookService;
     private final AuthorService authorService;
     private final Scanner scanner;
-    
+
     public ConsoleMenu(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.scanner = new Scanner(System.in);
     }
-    
-    /**
-     * Método principal que muestra el menú
-     */
+
     public void showMenu() {
         boolean exit = false;
-        
+
         while (!exit) {
             displayMainMenu();
             int option = readOption();
-            
+
             switch (option) {
                 case 1:
                     searchBooksByTitle();
@@ -59,18 +57,15 @@ public class ConsoleMenu {
                 default:
                     System.out.println("\n❌ Opción no válida. Por favor, seleccione una opción del menú.");
             }
-            
+
             if (!exit) {
                 pressEnterToContinue();
             }
         }
-        
+
         scanner.close();
     }
-    
-    /**
-     * Muestra el menú principal
-     */
+
     private void displayMainMenu() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("📚 SISTEMA DE GESTIÓN DE LITERATURAS - GUTENDEX");
@@ -85,10 +80,7 @@ public class ConsoleMenu {
         System.out.println("=".repeat(60));
         System.out.print("Seleccione una opción (0-6): ");
     }
-    
-    /**
-     * Lee la opción seleccionada por el usuario
-     */
+
     private int readOption() {
         try {
             return Integer.parseInt(scanner.nextLine().trim());
@@ -96,26 +88,23 @@ public class ConsoleMenu {
             return -1;
         }
     }
-    
-    /**
-     * Opción 1: Buscar libros por título
-     */
+
     private void searchBooksByTitle() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("🔍 BUSCAR LIBROS POR TÍTULO");
         System.out.println("=".repeat(60));
         System.out.print("Ingrese el título a buscar: ");
         String title = scanner.nextLine().trim();
-        
+
         if (title.isEmpty()) {
             System.out.println("\n❌ Debe ingresar un título para buscar.");
             return;
         }
-        
+
         System.out.println("\n⏳ Buscando libros en Gutendex API...");
-        
+
         List<BookDTO> books = bookService.searchAndSaveBooksByTitle(title);
-        
+
         if (books.isEmpty()) {
             System.out.println("\n📭 No se encontraron libros nuevos para guardar.");
             System.out.println("   Los libros pueden ya estar registrados o no existir en Gutendex.");
@@ -125,11 +114,7 @@ public class ConsoleMenu {
             displayBooks(books);
         }
     }
-    
-    /**
-     * Opción 2: Listar libros registrados
-     */
-    // En ConsoleMenu.java, método listRegisteredBooks():
+
     private void listRegisteredBooks() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("📖 LIBROS REGISTRADOS EN LA BASE DE DATOS");
@@ -146,43 +131,44 @@ public class ConsoleMenu {
                 displayBooks(books);
             }
         } catch (Exception e) {
-            System.err.println("❌ Error al listar libros: " + e.getMessage());
-            System.out.println("\n⚠️  Intente buscar libros primero con la opción 1.");
+            System.err.println("\n❌ Error al listar libros: " + e.getMessage());
         }
     }
-    
-    /**
-     * Opción 3: Listar autores registrados
-     */
+
     private void listRegisteredAuthors() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("👥 AUTORES REGISTRADOS EN LA BASE DE DATOS");
         System.out.println("=".repeat(60));
-        
-        List<AuthorDTO> authors = authorService.getAllAuthors();
-        
-        if (authors.isEmpty()) {
-            System.out.println("\n📭 No hay autores registrados en la base de datos.");
-        } else {
-            System.out.println("\n📊 Total de autores: " + authors.size());
+
+        try {
+            List<AuthorDTO> authors = authorService.getUniqueAuthors();
+
+            if (authors.isEmpty()) {
+                System.out.println("\n📭 No hay autores registrados en la base de datos.");
+            } else {
+                System.out.println("\n📊 Total de autores únicos: " + authors.size());
+                displayAuthors(authors);
+            }
+        } catch (Exception e) {
+            System.err.println("\n❌ Error al listar autores: " + e.getMessage());
+            // Fallback a lista normal
+            List<AuthorDTO> authors = authorService.getAllAuthors();
+            System.out.println("\n📊 Total de autores (puede incluir duplicados): " + authors.size());
             displayAuthors(authors);
         }
     }
-    
-    /**
-     * Opción 4: Listar autores vivos en un año determinado
-     */
+
     private void listAuthorsAliveInYear() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("🎂 AUTORES VIVOS EN UN AÑO DETERMINADO");
         System.out.println("=".repeat(60));
-        
+
         System.out.print("Ingrese el año: ");
         try {
             int year = Integer.parseInt(scanner.nextLine().trim());
-            
+
             List<AuthorDTO> authors = authorService.getAuthorsAliveInYear(year);
-            
+
             if (authors.isEmpty()) {
                 System.out.println("\n📭 No se encontraron autores vivos en el año " + year + ".");
             } else {
@@ -191,59 +177,109 @@ public class ConsoleMenu {
             }
         } catch (NumberFormatException e) {
             System.out.println("\n❌ Debe ingresar un año válido (número entero).");
+        } catch (Exception e) {
+            System.err.println("\n❌ Error al buscar autores: " + e.getMessage());
         }
     }
-    
-    /**
-     * Opción 5: Listar libros por idioma
-     */
+
     private void listBooksByLanguage() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("🌐 LISTAR LIBROS POR IDIOMA");
         System.out.println("=".repeat(60));
-        
+
         System.out.println("Idiomas comunes: en (inglés), es (español), fr (francés), de (alemán)");
         System.out.print("Ingrese el código del idioma (ej: 'es' para español): ");
         String language = scanner.nextLine().trim().toLowerCase();
-        
+
         if (language.isEmpty()) {
             System.out.println("\n❌ Debe ingresar un código de idioma.");
             return;
         }
-        
-        List<BookDTO> books = bookService.getBooksByLanguage(language);
-        
-        if (books.isEmpty()) {
-            System.out.println("\n📭 No hay libros en el idioma '" + language + "'.");
-        } else {
-            System.out.println("\n📚 Libros en " + language + ": " + books.size());
-            displayBooks(books);
+
+        try {
+            List<BookDTO> books = bookService.getBooksByLanguage(language);
+
+            if (books.isEmpty()) {
+                System.out.println("\n📭 No hay libros en el idioma '" + language + "'.");
+            } else {
+                System.out.println("\n📚 Libros en " + language + ": " + books.size());
+                displayBooks(books);
+            }
+        } catch (Exception e) {
+            System.err.println("\n❌ Error al listar libros por idioma: " + e.getMessage());
         }
     }
-    
-    /**
-     * Opción 6: Mostrar estadísticas
-     */
+
     private void displayStatistics() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("📊 ESTADÍSTICAS DEL SISTEMA");
         System.out.println("=".repeat(60));
-        
-        long totalBooks = bookService.getAllBooks().size();
-        long totalAuthors = authorService.countAuthors();
-        
-        System.out.println("📚 Total de libros registrados: " + totalBooks);
-        System.out.println("👥 Total de autores registrados: " + totalAuthors);
-        
-        if (totalBooks > 0) {
-            System.out.println("\n📈 Promedio de autores por libro: " + 
-                    String.format("%.2f", (double) totalAuthors / totalBooks));
+
+        try {
+            List<BookDTO> books = bookService.getAllBooks();
+            List<AuthorDTO> authors = authorService.getUniqueAuthors();
+
+            long totalBooks = books.size();
+            long totalAuthors = authors.size();
+
+            System.out.println("📚 Total de libros registrados: " + totalBooks);
+            System.out.println("👥 Total de autores registrados: " + totalAuthors);
+
+            if (totalBooks > 0 && totalAuthors > 0) {
+                System.out.println("📈 Promedio de autores por libro: " +
+                        String.format("%.2f", (double) totalAuthors / totalBooks));
+            }
+
+            // Estadísticas por idioma
+            System.out.println("\n🌐 Libros por idioma:");
+            Map<String, Long> languageCount = books.stream()
+                    .flatMap(book -> book.getLanguages().stream())
+                    .collect(Collectors.groupingBy(lang -> lang, Collectors.counting()));
+
+            if (languageCount.isEmpty()) {
+                System.out.println("   No hay datos de idiomas disponibles.");
+            } else {
+                languageCount.entrySet().stream()
+                        .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                        .forEach(entry -> {
+                            System.out.println("   " + entry.getKey() + ": " + entry.getValue() + " libros");
+                        });
+            }
+
+            // Top 5 libros más descargados
+            if (!books.isEmpty()) {
+                System.out.println("\n🏆 Top 5 libros más descargados:");
+                books.stream()
+                        .sorted((b1, b2) -> Long.compare(b2.getDownloadCount(), b1.getDownloadCount()))
+                        .limit(5)
+                        .forEach(book -> {
+                            System.out.println("   📖 " + book.getTitle() +
+                                    " (" + book.getDownloadCount() + " descargas)");
+                        });
+            }
+
+            // Autores con más libros
+            System.out.println("\n👑 Autores con más libros:");
+            Map<String, Long> authorBookCount = books.stream()
+                    .flatMap(book -> book.getAuthors().stream())
+                    .collect(Collectors.groupingBy(author -> author, Collectors.counting()));
+
+            if (authorBookCount.isEmpty()) {
+                System.out.println("   No hay datos de autores disponibles.");
+            } else {
+                authorBookCount.entrySet().stream()
+                        .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                        .limit(5)
+                        .forEach(entry -> {
+                            System.out.println("   " + entry.getKey() + ": " + entry.getValue() + " libros");
+                        });
+            }
+
+        } catch (Exception e) {
+            System.err.println("\n❌ Error al calcular estadísticas: " + e.getMessage());
         }
     }
-    
-    /**
-     * Muestra una lista de libros formateada
-     */
+
     private void displayBooks(List<BookDTO> books) {
         for (int i = 0; i < books.size(); i++) {
             BookDTO book = books.get(i);
@@ -252,22 +288,19 @@ public class ConsoleMenu {
             System.out.println("   Autores: " + String.join(", ", book.getAuthors()));
             System.out.println("   Idiomas: " + String.join(", ", book.getLanguages()));
             System.out.println("   Descargas: " + book.getDownloadCount());
-            
-            if (!book.getSubjects().isEmpty() && book.getSubjects().size() <= 3) {
-                System.out.println("   Temas: " + String.join(", ", 
+
+            if (book.getSubjects() != null && !book.getSubjects().isEmpty() && book.getSubjects().size() <= 3) {
+                System.out.println("   Temas: " + String.join(", ",
                         book.getSubjects().stream().limit(3).toList()));
             }
         }
     }
-    
-    /**
-     * Muestra una lista de autores formateada
-     */
+
     private void displayAuthors(List<AuthorDTO> authors) {
         for (int i = 0; i < authors.size(); i++) {
             AuthorDTO author = authors.get(i);
             System.out.println("\n" + (i + 1) + ". " + author.getName());
-            
+
             if (author.getBirthYear() != null || author.getDeathYear() != null) {
                 String years = "";
                 if (author.getBirthYear() != null) {
@@ -281,10 +314,7 @@ public class ConsoleMenu {
             }
         }
     }
-    
-    /**
-     * Pausa hasta que el usuario presione Enter
-     */
+
     private void pressEnterToContinue() {
         System.out.println("\n" + "-".repeat(40));
         System.out.print("Presione Enter para continuar...");

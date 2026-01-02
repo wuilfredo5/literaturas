@@ -2,6 +2,7 @@ package com.gutendex.literaturas.model.entity;
 
 import jakarta.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -30,7 +31,6 @@ public class Author {
     @ManyToMany(mappedBy = "translators")
     private Set<Book> translatedBooks = new HashSet<>();
 
-    // Constructores
     public Author() {}
 
     public Author(String name, Integer birthYear, Integer deathYear) {
@@ -60,4 +60,21 @@ public class Author {
 
     public Set<Book> getTranslatedBooks() { return translatedBooks; }
     public void setTranslatedBooks(Set<Book> translatedBooks) { this.translatedBooks = translatedBooks; }
+
+    // equals y hashCode para eliminar duplicados
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Author author = (Author) o;
+        return Objects.equals(name, author.name) &&
+                Objects.equals(birthYear, author.birthYear) &&
+                Objects.equals(deathYear, author.deathYear);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, birthYear, deathYear);
+    }
 }
