@@ -13,8 +13,9 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     List<Author> findByNameContainingIgnoreCase(String name);
 
-    @Query("SELECT a FROM Author a WHERE a.birthYear <= :year AND (a.deathYear IS NULL OR a.deathYear >= :year)")
-    List<Author> findAliveInYear(@Param("year") Integer year);
+    // Consulta simplificada - la lógica compleja la manejamos en el servicio
+    @Query("SELECT a FROM Author a WHERE a.birthYear IS NOT NULL AND a.deathYear IS NOT NULL AND a.birthYear <= :year AND a.deathYear >= :year")
+    List<Author> findAliveInYearWithKnownDates(@Param("year") Integer year);
 
     boolean existsByNameAndBirthYearAndDeathYear(String name, Integer birthYear, Integer deathYear);
 }

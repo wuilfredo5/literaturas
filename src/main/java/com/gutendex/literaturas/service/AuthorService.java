@@ -2,6 +2,7 @@ package com.gutendex.literaturas.service;
 
 import com.gutendex.literaturas.model.dto.AuthorDTO;
 import com.gutendex.literaturas.model.dto.BookMapper;
+import com.gutendex.literaturas.model.entity.Author;  // ← IMPORTAR Author
 import com.gutendex.literaturas.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,9 +52,39 @@ public class AuthorService {
 
     @Transactional(readOnly = true)
     public List<AuthorDTO> getAuthorsAliveInYear(Integer year) {
-        return authorRepository.findAliveInYear(year).stream()
+        return authorRepository.findAll().stream()
+                .filter(author -> wasAuthorAliveInYear(author, year))
                 .map(bookMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    // MÉTODO PRIVADO CORREGIDO
+    private boolean wasAuthorAliveInYear(com.gutendex.literaturas.model.entity.Author author, Integer year) {
+        if (author.getBirthYear() == null) {
+            return false; // No sabemos cuándo nació
+        }
+
+        if (author.getDeathYear() != null) {
+            // Tiene fecha de muerte: verificar si estaba vivo ese año
+            return author.getBirthYear() <= year && author.getDeathYear() >= year;
+        } else {
+            // No tiene fecha de muerte: hacer suposiciones razonables
+            int ageAtYear = year - author.getBirthYear();
+
+            // Suposiciones:
+            // 1. Si hubiera nacido después del año, no estaba vivo
+            if (author.getBirthYear() > year) return false;
+
+            // 2. Si tendría más de 120 años, probablemente ya falleció
+            if (ageAtYear > 120) return false;
+
+            // 3. Para autores muy antiguos (nacidos antes de 1900 sin fecha de muerte), asumir muertos
+            if (author.getBirthYear() < 1900) return false;
+
+            // 4. Para autores modernos (nacidos después de 1900), podrían estar vivos
+            // (esto es una simplificación)
+            return true;
+        }
     }
 
     @Transactional(readOnly = true)

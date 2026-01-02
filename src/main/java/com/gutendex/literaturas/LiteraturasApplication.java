@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class LiteraturasApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(LiteraturasApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(LiteraturasApplication.class, args);
+    }
 }
