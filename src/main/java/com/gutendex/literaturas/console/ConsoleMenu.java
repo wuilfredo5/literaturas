@@ -162,6 +162,7 @@ public class ConsoleMenu {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("🎂 AUTORES VIVOS EN UN AÑO DETERMINADO");
         System.out.println("=".repeat(60));
+        System.out.println("⚠️  Nota: Solo se consideran autores con fechas de nacimiento Y muerte conocidas.");
 
         System.out.print("Ingrese el año: ");
         try {
@@ -170,7 +171,8 @@ public class ConsoleMenu {
             List<AuthorDTO> authors = authorService.getAuthorsAliveInYear(year);
 
             if (authors.isEmpty()) {
-                System.out.println("\n📭 No se encontraron autores vivos en el año " + year + ".");
+                System.out.println("\n📭 No se encontraron autores con fechas conocidas vivas en el año " + year + ".");
+                System.out.println("   Muchos autores antiguos no tienen fecha de muerte registrada.");
             } else {
                 System.out.println("\n👥 Autores vivos en " + year + ": " + authors.size());
                 displayAuthors(authors);
@@ -181,7 +183,6 @@ public class ConsoleMenu {
             System.err.println("\n❌ Error al buscar autores: " + e.getMessage());
         }
     }
-
     private void listBooksByLanguage() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("🌐 LISTAR LIBROS POR IDIOMA");
