@@ -56,42 +56,50 @@ public class BookService {
         try {
             Book book = bookMapper.toEntity(bookDto);
 
-            // Manejar autores existentes
-            book.getAuthors().forEach(author -> {
-                Author existingAuthor = findOrCreateAuthor(author);
-                if (existingAuthor.getId() != null) {
-                    author.setId(existingAuthor.getId());
+            // CORRECCIÓN: Manejar autores de forma correcta
+            Set<Author> managedAuthors = new HashSet<>();
+            if (book.getAuthors() != null) {
+                for (Author author : book.getAuthors()) {
+                    Author managedAuthor = findOrCreateAuthor(author);
+                    managedAuthors.add(managedAuthor);
                 }
-            });
+                book.setAuthors(managedAuthors);
+            }
 
-            // Manejar traductores existentes
-            book.getTranslators().forEach(translator -> {
-                Author existingTranslator = findOrCreateAuthor(translator);
-                if (existingTranslator.getId() != null) {
-                    translator.setId(existingTranslator.getId());
+            // CORRECCIÓN: Manejar traductores de forma correcta
+            Set<Author> managedTranslators = new HashSet<>();
+            if (book.getTranslators() != null) {
+                for (Author translator : book.getTranslators()) {
+                    Author managedTranslator = findOrCreateAuthor(translator);
+                    managedTranslators.add(managedTranslator);
                 }
-            });
+                book.setTranslators(managedTranslators);
+            }
 
             return Optional.of(bookRepository.save(book));
         } catch (Exception e) {
             System.err.println("Error al guardar libro: " + e.getMessage());
+            e.printStackTrace();  // Para ver el stack trace completo
             return Optional.empty();
         }
     }
 
     private Author findOrCreateAuthor(Author author) {
-        return authorRepository
-                .findByNameContainingIgnoreCase(author.getName())
-                .stream()
-                .filter(a -> {
-                    boolean sameBirth = (a.getBirthYear() == null && author.getBirthYear() == null) ||
-                            (a.getBirthYear() != null && a.getBirthYear().equals(author.getBirthYear()));
-                    boolean sameDeath = (a.getDeathYear() == null && author.getDeathYear() == null) ||
-                            (a.getDeathYear() != null && a.getDeathYear().equals(author.getDeathYear()));
-                    return sameBirth && sameDeath;
-                })
-                .findFirst()
-                .orElseGet(() -> authorRepository.save(author));
+        // Buscar por nombre y años
+        List<Author> existingAuthors = authorRepository.findByNameContainingIgnoreCase(author.getName());
+
+        for (Author existing : existingAuthors) {
+            boolean sameBirth = Objects.equals(existing.getBirthYear(), author.getBirthYear());
+            boolean sameDeath = Objects.equals(existing.getDeathYear(), author.getDeathYear());
+
+            if (sameBirth && sameDeath) {
+                return existing;  // Retornar autor existente (managed)
+            }
+        }
+
+        // Si no existe, crear nuevo autor
+        Author newAuthor = new Author(author.getName(), author.getBirthYear(), author.getDeathYear());
+        return authorRepository.save(newAuthor);
     }
 
     @Transactional(readOnly = true)

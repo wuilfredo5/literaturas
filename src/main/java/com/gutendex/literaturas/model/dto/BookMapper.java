@@ -1,16 +1,23 @@
-// src/main/java/com/gutendex/model/dto/BookMapper.java
 package com.gutendex.literaturas.model.dto;
 
 import com.gutendex.literaturas.model.entity.Author;
 import com.gutendex.literaturas.model.entity.Book;
 import com.gutendex.literaturas.model.entity.BookFormats;
+import com.gutendex.literaturas.repository.AuthorRepository;
 import org.springframework.stereotype.Component;
+
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Component
 public class BookMapper {
-    
+
+    private final AuthorRepository authorRepository;
+
+    public BookMapper(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
     public Book toEntity(BookResponseDTO dto) {
         Book book = new Book();
         book.setGutenbergId(dto.getId());
@@ -22,8 +29,9 @@ public class BookMapper {
         book.setCopyright(dto.getCopyright());
         book.setMediaType(dto.getMediaType());
         book.setDownloadCount(dto.getDownloadCount());
-        
-        // Mapear autores
+
+        // IMPORTANTE: NO asignar IDs aquí, se asignarán en el servicio
+        // Solo crear objetos Author sin ID
         if (dto.getAuthors() != null) {
             book.setAuthors(dto.getAuthors().stream()
                     .map(person -> new Author(
@@ -32,8 +40,7 @@ public class BookMapper {
                             person.getDeathYear()))
                     .collect(Collectors.toSet()));
         }
-        
-        // Mapear traductores
+
         if (dto.getTranslators() != null) {
             book.setTranslators(dto.getTranslators().stream()
                     .map(person -> new Author(
@@ -42,8 +49,7 @@ public class BookMapper {
                             person.getDeathYear()))
                     .collect(Collectors.toSet()));
         }
-        
-        // Mapear formatos
+
         if (dto.getFormats() != null) {
             BookFormats formats = new BookFormats();
             formats.setTextPlain(dto.getFormats().getTextPlain());
@@ -57,15 +63,14 @@ public class BookMapper {
             formats.setTextPlainUs(dto.getFormats().getTextPlainUs());
             book.setFormats(formats);
         }
-        
+
         return book;
     }
-    
+
     public BookDTO toDTO(Book book) {
-        BookDTO bookDTO = new BookDTO(book);
-        return bookDTO;
+        return new BookDTO(book);
     }
-    
+
     public AuthorDTO toDTO(Author author) {
         return new AuthorDTO(author);
     }
