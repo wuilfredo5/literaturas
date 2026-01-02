@@ -1,71 +1,60 @@
-📚 Sistema de Gestión de Literaturas - Gutendex API
+# 📚 Sistema de Gestión de Literaturas - Gutendex API
 
-Descripción
-Aplicación Spring Boot que consume la API pública de Gutendex.com para buscar, almacenar y gestionar información sobre libros de dominio público. El sistema proporciona una interfaz de consola interactiva para explorar y analizar literatura clásica.
+## Descripción
 
-✨ Características Principales
-🔍 Búsqueda en tiempo real de libros por título en Gutendex API
+Aplicación Spring Boot que consume la API pública de **Gutendex.com** para buscar, almacenar y gestionar información sobre libros de dominio público. El sistema proporciona una interfaz de consola interactiva para explorar y analizar literatura clásica.
 
-💾 Almacenamiento persistente en PostgreSQL con Spring Data JPA
-  
-   Análisis estadístico de libros y autores
+## ✨ Características Principales
 
-🌐 Filtrado por idioma (inglés, español, francés, alemán, etc.)
+- 🔍 **Búsqueda en tiempo real** de libros por título en Gutendex API
+- 💾 **Almacenamiento persistente** en PostgreSQL con Spring Data JPA
+- 📊 **Análisis estadístico** de libros y autores
+- 🌐 **Filtrado por idioma** (inglés, español, francés, alemán, etc.)
+- 👥 **Gestión de autores** con información biográfica
+- 🎂 **Búsqueda de autores vivos** en un año específico
+- 📈 **Métricas y estadísticas** sobre la colección
+- 🖥️ **Interfaz de consola intuitiva** con menús interactivos
 
-👥 Gestión de autores con información biográfica
+## 🛠️ Tecnologías Utilizadas
 
-🎂 Búsqueda de autores vivos en un año específico
+### Backend
+- **Java 21** - Lenguaje principal
+- **Spring Boot 4.0.1** - Framework principal
+- **Spring Data JPA** - Persistencia de datos
+- **Spring Web MVC** - Cliente REST para API externa
 
-📈 Métricas y estadísticas sobre la colección
+### Base de Datos
+- **PostgreSQL** - Sistema de base de datos relacional
 
-🖥️ Interfaz de consola intuitiva con menús interactivos
+### Herramientas
+- **Maven 3.9.12** - Gestión de dependencias
+- **Maven Wrapper** - Ejecución independiente de Maven
+- **Spring Boot DevTools** - Recarga en caliente para desarrollo
 
-🛠️ Tecnologías Utilizadas
+### APIs Externas
+- **Gutendex API** (https://gutendex.com/books) - Fuente de datos de libros
 
-Backend
-Java 21 - Lenguaje principal
+## 📋 Prerrequisitos
 
-Spring Boot 4.0.1 - Framework principal
+### Software Requerido
+- **Java JDK 21** o superior
+- **PostgreSQL 12** o superior
+- **Maven 3.9+** (incluido en el wrapper)
 
-Spring Data JPA - Persistencia de datos
-
-Spring Web MVC - Cliente REST para API externa
-
-Base de Datos
-PostgreSQL - Sistema de base de datos relacional
-
-Herramientas
-Maven 3.9.12 - Gestión de dependencias
-
-Maven Wrapper - Ejecución independiente de Maven
-
-Spring Boot DevTools - Recarga en caliente para desarrollo
-
-APIs Externas
-Gutendex API (https://gutendex.com/books) - Fuente de datos de libros
-
-📋 Prerrequisitos
-Software Requerido
-Java JDK 21 o superior
-
-PostgreSQL 12 o superior
-
-Maven 3.9+ (incluido en el wrapper)
-
-Variables de Entorno
-bash
+### Variables de Entorno
+```bash
 # Configuración de base de datos
 export DB_USER=tu_usuario_postgres
 export DB_PASS=tu_password_postgres
-🚀 Instalación y Configuración
+
+🚀 🚀 Instalación y Configuración
 1. Clonar el Repositorio
-   bash
-   git clone <url-del-repositorio>
-   cd literaturas
+git clone <url-del-repositorio>
+cd literaturas
+
 2. Configurar Base de Datos
-   sql
-   -- Conéctate a PostgreSQL
-   sudo -u postgres psql
+-- Conéctate a PostgreSQL
+sudo -u postgres psql
 
 -- Crear base de datos
 CREATE DATABASE gutendex_db;
@@ -73,8 +62,9 @@ CREATE DATABASE gutendex_db;
 -- Crear usuario (opcional)
 CREATE USER gutendex_user WITH PASSWORD 'tu_password';
 GRANT ALL PRIVILEGES ON DATABASE gutendex_db TO gutendex_user;
+
 3. Configurar Variables de Entorno
-   bash
+bash
 # Linux/Mac
 export DB_USER=postgres
 export DB_PASS=tu_password
@@ -82,16 +72,17 @@ export DB_PASS=tu_password
 # Windows (PowerShell)
 $env:DB_USER="postgres"
 $env:DB_PASS="tu_password"
+
 4. Compilar el Proyecto
-   bash
+bash
 # Usar Maven Wrapper
 ./mvnw clean compile
 
 # O con Maven instalado
 mvn clean compile
 5. Ejecutar la Aplicación
-   bash
-   ./mvnw spring-boot:run
+bash
+./mvnw spring-boot:run
 
 # O compilar y ejecutar el JAR
 ./mvnw clean package
@@ -135,13 +126,10 @@ Seleccione una opción (0-6): 6
 📚 Total de libros registrados: 45
 👥 Total de autores registrados: 28
 🌐 Libros por idioma:
-en: 30 libros
-es: 10 libros
-fr: 5 libros
-
-
+   en: 30 libros
+   es: 10 libros
+   fr: 5 libros
 🏗️ Estructura del Proyecto
-
 text
 literaturas/
 ├── src/main/java/com/gutendex/literaturas/
@@ -170,12 +158,8 @@ literaturas/
 │   ├── service/              # Lógica de negocio
 │   │   ├── AuthorService.java
 │   │   └── BookService.java
-│   │   
-│   └── util
-│       └── ConsoleMessages 
-│    
+│   └── LiteraturasApplication.java # Clase principal
 ├── src/main/resources/
-│   ├── LiteraturasApplication.java # Clase principal
 │   ├── application.properties # Configuración de la aplicación
 │   ├── banner.txt            # Banner de inicio
 │   └── static/              # Recursos estáticos
@@ -183,10 +167,7 @@ literaturas/
 ├── mvnw, mvnw.cmd          # Scripts Maven wrapper
 ├── pom.xml                 # Configuración Maven
 └── HELP.md                 # Documentación de ayuda
-
-
 📊 Modelo de Datos
-
 Entidad Book
 id - Identificador único
 
@@ -311,7 +292,6 @@ Spring Boot por el excelente framework
 Alura por el desafío que inspiró este proyecto
 
 🚀 Próximas Características
-
 Interfaz web con Thymeleaf
 
 API REST para integración externa
@@ -326,3 +306,4 @@ Dashboard de métricas en tiempo real
 
 📞 Soporte
 Para soporte, abra un issue en el repositorio o contacte a tu-email@ejemplo.com.
+
