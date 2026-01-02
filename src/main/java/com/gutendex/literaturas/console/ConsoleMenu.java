@@ -53,6 +53,7 @@ public class ConsoleMenu {
                 case 0:
                     exit = true;
                     System.out.println("\n¡Gracias por usar el sistema de Literaturas! ¡Hasta pronto!");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("\n❌ Opción no válida. Por favor, seleccione una opción del menú.");
@@ -70,7 +71,7 @@ public class ConsoleMenu {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("📚 SISTEMA DE GESTIÓN DE LITERATURAS - GUTENDEX");
         System.out.println("=".repeat(60));
-        System.out.println("1. 🔍 Buscar libros por título (y guardar en base de datos)");
+        System.out.println("1. 🔍 Buscar libros (Por titulo o autor)");
         System.out.println("2. 📖 Listar libros registrados");
         System.out.println("3. 👥 Listar autores registrados");
         System.out.println("4. 🎂 Listar autores vivos en un año determinado");

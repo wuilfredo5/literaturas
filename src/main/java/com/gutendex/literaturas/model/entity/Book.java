@@ -15,33 +15,33 @@ public class Book {
     @Column(name = "gutenberg_id", unique = true)
     private Long gutenbergId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
     @ElementCollection
     @CollectionTable(name = "book_subjects", joinColumns = @JoinColumn(name = "book_id"))
-    @Column(name = "subject")
+    @Column(name = "subject", length = 500)
     private Set<String> subjects = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "book_summaries", joinColumns = @JoinColumn(name = "book_id"))
-    @Column(name = "summary", length = 2000)
+    @Column(name = "summary", columnDefinition = "TEXT")
     private Set<String> summaries = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "book_bookshelves", joinColumns = @JoinColumn(name = "book_id"))
-    @Column(name = "bookshelf")
+    @Column(name = "bookshelf", length = 500)
     private Set<String> bookshelves = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "book_languages", joinColumns = @JoinColumn(name = "book_id"))
-    @Column(name = "language")
+    @Column(name = "language", length = 100)
     private Set<String> languages = new HashSet<>();
 
     @Column(name = "copyright")
     private Boolean copyright;
 
-    @Column(name = "media_type")
+    @Column(name = "media_type", length = 100)
     private String mediaType;
 
     @Column(name = "download_count")

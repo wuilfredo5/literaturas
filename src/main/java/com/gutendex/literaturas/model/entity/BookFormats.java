@@ -6,31 +6,31 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class BookFormats {
 
-    @Column(name = "text_plain", length = 500)
+    @Column(name = "text_plain", length = 1000)
     private String textPlain;
 
-    @Column(name = "text_html", length = 500)
+    @Column(name = "text_html", length = 1000)
     private String textHtml;
 
-    @Column(name = "text_plain_utf8", length = 500)
+    @Column(name = "text_plain_utf8", length = 1000)
     private String textPlainUtf8;
 
-    @Column(name = "application_epub", length = 500)
+    @Column(name = "application_epub", length = 1000)
     private String applicationEpub;
 
-    @Column(name = "application_mobi", length = 500)
+    @Column(name = "application_mobi", length = 1000)
     private String applicationMobi;
 
-    @Column(name = "application_rdf", length = 500)
+    @Column(name = "application_rdf", length = 1000)
     private String applicationRdf;
 
-    @Column(name = "application_zip", length = 500)
+    @Column(name = "application_zip", length = 1000)
     private String applicationZip;
 
-    @Column(name = "image_jpeg", length = 500)
+    @Column(name = "image_jpeg", length = 1000)
     private String imageJpeg;
 
-    @Column(name = "text_plain_us", length = 500)
+    @Column(name = "text_plain_us", length = 1000)
     private String textPlainUs;
 
     // Constructores
